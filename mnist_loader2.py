@@ -3,8 +3,6 @@
 import gzip
 import numpy as np
 from array import array
-from PIL import Image, ImageDraw
-
 
 """Helper for MNIST files in IDX format.
 
