@@ -2,6 +2,10 @@
 
 
 """
+Original at:
+https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py
+Only minor chages to print() to make it function in python3 were done.
+
 network.py
 ~~~~~~~~~~
 
