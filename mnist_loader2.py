@@ -3,6 +3,8 @@
 import gzip
 import numpy as np
 from array import array
+from PIL import Image, ImageDraw
+
 
 """Helper for MNIST files in IDX format.
 
@@ -58,7 +60,10 @@ def recdim(f, dims, level):
     flatten = True
   for x in range(num_to_read):
     if level == len(dims) - 1 or flatten:
-      result.append(int.from_bytes(f.read(1), 'big'))
+      val = int.from_bytes(f.read(1), 'big')
+      if flatten:
+         val /= 255.0
+      result.append(val)
     else:
       result.append(recdim(f, dims, level + 1))
   return result
@@ -106,15 +111,15 @@ def load_data_wrapper():
     Debug(f"Loaded {fname}")
 
   test_inputs = [np.reshape(x, (784, 1)) for x in data[DATA[0]]]
-  test_data = zip(test_inputs, data[DATA[1]])
+  test_data = list(zip(test_inputs, data[DATA[1]]))
   Debug(f"Done zip 10k")
   Debug(f"Loaded Labels 60k")
   train_labels = [vectorized_result(x) for x in data[ DATA[3]][:50000]   ]
   train_inputs = [np.reshape(x, (784, 1)) for x in data[ DATA[2]][:50000]     ]
-  train_data = zip(train_inputs, train_labels)
+  train_data = list(zip(train_inputs, train_labels))
   Debug(f"Zipped Training data.")
   validation_inputs = [np.reshape(x, (784, 1)) for x in data[ DATA[2]][:50000]     ]
-  validation_data = zip(validation_inputs, data[DATA[3]][50000:])
+  validation_data = list(zip(validation_inputs, data[DATA[3]][50000:]))
   Debug(f"Zipped all data.")
   return (train_data, validation_data, test_data)
 
